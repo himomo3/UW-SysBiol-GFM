@@ -21,6 +21,8 @@ from selection import proportional_selection, threshold_selection
 from reproduction import asexual_reproduction
 from visualization import plot_population
 
+#let's push
+
 def main():
     env = Environment(alpha_init=config.alpha0, c=config.c, delta=config.delta)
     pop = Population(size=config.N, n_dim=config.n)
