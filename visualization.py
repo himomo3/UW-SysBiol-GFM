@@ -14,7 +14,8 @@ def plot_population(population, alpha, generation, save_path=None, show_plot=Fal
     
     plt.figure(figsize=(5, 5))
     plt.scatter(x, y, label="Populacja", alpha=0.7)
-    plt.scatter([alpha[0]], [alpha[1]], color='red', label="Optimum", marker='X')
+    for i in range(len(alpha)):
+        plt.scatter([alpha[i][0]], [alpha[i][1]], color='red', label="Optimum", marker='X')
     plt.title(f"Pokolenie: {generation}")
     plt.xlim(-5, 5)
     plt.ylim(-5, 5)

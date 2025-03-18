@@ -22,9 +22,10 @@ class Environment:
         Zmiana środowiska w każdym pokoleniu:
         alpha(t) = alpha(t-1) + N(c, delta^2 I)
         """
-        n = len(self.alpha)
-        random_shift = np.random.normal(loc=self.c, scale=self.delta, size=n)
-        self.alpha = self.alpha + random_shift
+        for i in range(len(self.alpha)):
+            n = len(self.alpha[i])
+            random_shift = np.random.normal(loc=self.c[i], scale=self.delta, size=n)
+            self.alpha[i] = self.alpha[i] + random_shift
 
     def get_optimal_phenotype(self):
         return self.alpha

@@ -1,16 +1,5 @@
 # main.py
 
-import numpy as np
-import config
-from environment import Environment
-from population import Population
-from mutation import mutate_population
-from selection import proportional_selection, threshold_selection
-from reproduction import asexual_reproduction
-from visualization import plot_population
-
-# main.py
-
 import os
 import numpy as np
 import config
