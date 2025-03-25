@@ -4,28 +4,22 @@ import numpy as np
 
 class Environment:
     """
-    Klasa środowiska przechowuje optymalny fenotyp alpha
-    oraz reguły jego zmiany w czasie.
+    Klasa środowiska przechowuje zawarte w nim nisze ewolucyjne.
     """
-    def __init__(self, alpha_init, c, delta):
+    def __init__(self, niches):
         """
-        :param alpha_init: początkowy wektor alpha
-        :param c: wektor kierunkowy zmiany
-        :param delta: odchylenie std w losowej fluktuacji
+        :niches: nisze zawarte w środowisku
         """
-        self.alpha = alpha_init
-        self.c = c
-        self.delta = delta
+        self.niches = niches
 
     def update(self):
         """
-        Zmiana środowiska w każdym pokoleniu:
+        Zmiana środowiska poszczególnych nisz w każdym pokoleniu:
         alpha(t) = alpha(t-1) + N(c, delta^2 I)
         """
-        for i in range(len(self.alpha)):
-            n = len(self.alpha[i])
-            random_shift = np.random.normal(loc=self.c[i], scale=self.delta, size=n)
-            self.alpha[i] = self.alpha[i] + random_shift
+        for niche in self.niches:
+            niche.update()
+            
 
     def get_optimal_phenotype(self):
-        return self.alpha
+        return [niche.get_optimal_phenotype() for niche in self.niches]

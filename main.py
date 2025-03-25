@@ -5,6 +5,7 @@ import numpy as np
 import config
 from environment import Environment
 from population import Population
+from niche import Niche
 from mutation import mutate_population
 from selection import proportional_selection, threshold_selection
 from reproduction import asexual_reproduction
@@ -13,7 +14,10 @@ from visualization import plot_population
 #let's push
 
 def main():
-    env = Environment(alpha_init=config.alpha0, c=config.c, delta=config.delta)
+    niches_init = []
+    for i in range(config.niche_count):
+        niches_init.append(Niche(alpha_init=config.alpha0[i], c=config.c[i], delta=config.delta, idx=i))
+    env = Environment(niches=niches_init)
     pop = Population(size=config.N, n_dim=config.n)
 
     # Katalog, w którym zapisujemy obrazki (możesz nazwać np. "frames/")
