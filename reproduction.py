@@ -1,6 +1,7 @@
 # reproduction.py
 
 import copy
+import numpy as np
 
 def asexual_reproduction(survivors, N):
     """
@@ -15,9 +16,9 @@ def asexual_reproduction(survivors, N):
         return []
 
     while len(new_population) < N:
-        parent = copy.deepcopy(survivors[0])  # np. zawsze klonuj pierwszego (do testów)
+        # parent = copy.deepcopy(survivors[0])  # np. zawsze klonuj pierwszego (do testów)
         # W praktyce można klonować losowo: 
-        # parent = copy.deepcopy(np.random.choice(survivors))
+        parent = copy.deepcopy(np.random.choice(survivors))
         new_population.append(parent)
 
     return new_population[:N]  # przycinamy, gdyby było za dużo
