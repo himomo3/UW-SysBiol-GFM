@@ -43,7 +43,7 @@ def main():
 
         # Zapis aktualnego stanu populacji do pliku PNG
         frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
-        plot_population(pop, env.get_optimal_phenotype(), generation, save_path=frame_filename, show_plot=False)
+        plot_population(pop, env, generation, save_path=frame_filename, show_plot=False)
 
     print("Symulacja zakończona. Tworzenie GIF-a...")
 
