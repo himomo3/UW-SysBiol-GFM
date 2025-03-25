@@ -18,16 +18,18 @@ xi = 0.1         # odchylenie standardowe w rozkładzie normalnym mutacji
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 0.2      # parametr w funkcji fitness (kontroluje siłę selekcji)
-threshold = 0.1  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
+sigma = 1      # parametr w funkcji fitness (kontroluje siłę selekcji)
+threshold = 0.01  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
 
 # --------------------
 # PARAMETRY ŚRODOWISKA
 # --------------------
+# Liczba nisz
+niche_count = 2
 # Początkowe alpha(t)
-alpha0 = [np.array([-0.3, -0.3]), np.array([0.3, 0.3])]  
-# Wektor kierunkowej zmiany c
-c = [np.array([-0.01, -0.01]), np.array([0.01, 0.01])]     
+alpha0 = [np.array([0.0, -0.5]), np.array([0.0, 0.5])]  
+# Wektory kierunkowej zmiany c
+c = [np.array([0.01, 0.01]), np.array([0.01, 0.01])]     
 delta = 0.01    # odchylenie standardowe dla fluktuacji
 max_generations = 100  # liczba pokoleń do zasymulowania
 
