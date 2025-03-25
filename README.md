@@ -1,5 +1,5 @@
 # UW-SysBiol-FGM
-Evolutional model - variation of Fisher's Geometric Model
+Evolutional model - variation of Fisher's Geometric Model with multiple optimal phenotypes
 
 based on https://github.com/storaged/UW-SysBiol-Project1
 
