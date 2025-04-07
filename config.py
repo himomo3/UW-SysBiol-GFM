@@ -5,20 +5,20 @@ import numpy as np
 # -------------------
 # PARAMETRY POPULACJI
 # -------------------
-N = 50           # liczba osobników w populacji
+N = 500           # liczba osobników w populacji
 n = 2            # wymiar przestrzeni fenotypowej
 
 # --------------------
 # PARAMETRY MUTACJI
 # --------------------
-mu = 0.1         # prawdopodobieństwo mutacji dla osobnika
-mu_c = 0.5       # prawdopodobieństwo mutacji konkretnej cechy, jeśli osobnik mutuje
-xi = 0.1         # odchylenie standardowe w rozkładzie normalnym mutacji
+mu = 0.2         # prawdopodobieństwo mutacji dla osobnika
+mu_c = 0.2       # prawdopodobieństwo mutacji konkretnej cechy, jeśli osobnik mutuje
+xi = 0.5         # odchylenie standardowe w rozkładzie normalnym mutacji
 
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 1      # parametr w funkcji fitness (kontroluje siłę selekcji)
+sigma = 10      # parametr w funkcji fitness (kontroluje siłę selekcji)
 threshold = 0.01  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
 
 # --------------------
@@ -31,7 +31,7 @@ alpha0 = [np.array([0.0, -0.5]), np.array([0.0, 0.5])]
 # Wektory kierunkowej zmiany c
 c = [np.array([0.01, 0.01]), np.array([0.01, 0.01])]     
 delta = 0.01    # odchylenie standardowe dla fluktuacji
-max_generations = 100  # liczba pokoleń do zasymulowania
+max_generations = 50  # liczba pokoleń do zasymulowania
 
 # ----------------------
 # PARAMETRY REPRODUKCJI

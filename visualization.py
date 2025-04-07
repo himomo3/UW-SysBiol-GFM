@@ -1,6 +1,7 @@
 # visualization.py
 
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
 import numpy as np
 
 def plot_population(population, env, generation, save_path=None, show_plot=False):
@@ -20,6 +21,8 @@ def plot_population(population, env, generation, save_path=None, show_plot=False
     plt.scatter(x, y, label="Populacja", alpha=0.7)
     for i in range(len(alpha)):
         plt.scatter([alpha[i][0]], [alpha[i][1]], color=colors_optimum[i], label="Optimum", marker='X')
+        circle = Circle((alpha[i][0], alpha[i][1]), 1, edgecolor=colors_optimum[i], fill=True, facecolor=colors_optimum[i], linewidth=1.5, alpha=0.25)
+        plt.gca().add_patch(circle)
 
     plt.title(f"Pokolenie: {generation}")
     plt.xlim(-5, 5)

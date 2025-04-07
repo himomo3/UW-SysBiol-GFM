@@ -1,6 +1,7 @@
 # main.py
 
 import os
+import streamlit as st
 import numpy as np
 import config
 from environment import Environment
@@ -10,7 +11,6 @@ from mutation import mutate_population
 from selection import proportional_selection, threshold_selection
 from reproduction import asexual_reproduction
 from visualization import plot_population
-
 #let's push
 
 def main():
@@ -22,6 +22,13 @@ def main():
 
     # Katalog, w którym zapisujemy obrazki (możesz nazwać np. "frames/")
     frames_dir = "frames"
+    try:
+        for filename in os.listdir(frames_dir):
+            file_path = os.path.join(frames_dir, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    except:
+        pass
     os.makedirs(frames_dir, exist_ok=True)  # tworzy folder, jeśli nie istnieje
 
     for generation in range(config.max_generations):
@@ -29,10 +36,10 @@ def main():
         mutate_population(pop, mu=config.mu, mu_c=config.mu_c, xi=config.xi)
 
         # 2. Selekcja
-        survivors = threshold_selection(pop, env.get_optimal_phenotype(), config.sigma, config.threshold)
+        survivors = threshold_selection(pop, env, config.sigma, config.threshold)
         pop.set_individuals(survivors)
         if len(survivors) > 0:
-            proportional_selection(pop, env.get_optimal_phenotype(), config.sigma, config.N)
+            proportional_selection(pop, env, config.sigma, config.N)
         else:
             print(f"Wszyscy wymarli w pokoleniu {generation}. Kończę symulację.")
             break
@@ -64,7 +71,7 @@ def create_gif_from_frames(frames_dir, gif_filename, duration=0.2):
 
     # Sortujemy pliki po nazwach, żeby zachować kolejność generacji
     filenames = sorted([f for f in os.listdir(frames_dir) if f.endswith(".png")])
-    
+
     with imageio.get_writer(gif_filename, mode='I', duration=duration) as writer:
         for file_name in filenames:
             path = os.path.join(frames_dir, file_name)

@@ -9,6 +9,10 @@ class Individual:
     """
     def __init__(self, phenotype):
         self.phenotype = phenotype
+        self.color = "Grey"
+
+    def set_color(self, color):
+        self.color = color
 
     def get_phenotype(self):
         return self.phenotype
