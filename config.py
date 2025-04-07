@@ -18,7 +18,7 @@ xi = 0.5         # odchylenie standardowe w rozkładzie normalnym mutacji
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 10      # parametr w funkcji fitness (kontroluje siłę selekcji)
+sigma = 0.9      # parametr w funkcji fitness (kontroluje siłę selekcji)
 threshold = 0.01  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
 
 # --------------------

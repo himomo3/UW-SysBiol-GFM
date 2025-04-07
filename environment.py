@@ -25,5 +25,3 @@ class Environment:
         return [niche.get_optimal_phenotype() for niche in self.niches]
     def get_color_optimum(self):
         return [niche.get_color_optimum() for niche in self.niches]
-    def get_color_individual(self):
-        return [niche.get_color_individual() for niche in self.niches]

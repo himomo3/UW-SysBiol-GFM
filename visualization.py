@@ -12,14 +12,22 @@ def plot_population(population, env, generation, save_path=None, show_plot=False
     """
     alpha = env.get_optimal_phenotype()
     colors_optimum = env.get_color_optimum()
-    colors_individuals = env.get_color_individual()
-    x = [ind.get_phenotype()[0] for ind in population.get_individuals()]
-    y = [ind.get_phenotype()[1] for ind in population.get_individuals()]
+
+    pop = population.get_individuals()
+
     color_pairs = []
 
     plt.figure(figsize=(5, 5))
-    plt.scatter(x, y, label="Populacja", alpha=0.7)
+
     for i in range(len(alpha)):
+        individuals_to_plot = []
+        for ind in pop:
+            if ind.get_color().all == colors_optimum[i].all:
+                individuals_to_plot.append(ind)
+
+        x = [ind.get_phenotype()[0] for ind in individuals_to_plot]
+        y = [ind.get_phenotype()[1] for ind in individuals_to_plot]
+        plt.scatter(x, y, label="Populacja", color=colors_optimum[i], alpha=0.7)
         plt.scatter([alpha[i][0]], [alpha[i][1]], color=colors_optimum[i], label="Optimum", marker='X')
         circle = Circle((alpha[i][0], alpha[i][1]), 1, edgecolor=colors_optimum[i], fill=True, facecolor=colors_optimum[i], linewidth=1.5, alpha=0.25)
         plt.gca().add_patch(circle)

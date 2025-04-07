@@ -16,7 +16,7 @@ def fitness_function(phenotype, env, sigma, ind):
         dist_sq = np.sum(diff ** 2)
         if dist_sq < min_dist:
             min_dist = dist_sq
-            color_individual = niche.color_individual
+            color_individual = niche.get_color_optimum()
         ind.set_color(color_individual)
     return np.exp(-min_dist / (2 * sigma ** 2))
 
