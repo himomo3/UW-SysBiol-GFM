@@ -10,13 +10,13 @@ def fitness_function(phenotype, env, sigma, ind):
     :param sigma: odchylenie (float) kontrolujące siłę selekcji
     """
     min_dist = np.inf
-    for env in env.get_niches():
-        alpha = env.get_optimal_phenotype()
+    for niche in env.get_niches():
+        alpha = niche.get_optimal_phenotype()
         diff = phenotype - alpha
         dist_sq = np.sum(diff ** 2)
         if dist_sq < min_dist:
             min_dist = dist_sq
-            color_individual = env.color_individual
+            color_individual = niche.color_individual
         ind.set_color(color_individual)
     return np.exp(-min_dist / (2 * sigma ** 2))
 
