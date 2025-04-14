@@ -11,25 +11,31 @@ n = 2            # wymiar przestrzeni fenotypowej
 # --------------------
 # PARAMETRY MUTACJI
 # --------------------
-mu = 0.2         # prawdopodobieństwo mutacji dla osobnika
-mu_c = 0.2       # prawdopodobieństwo mutacji konkretnej cechy, jeśli osobnik mutuje
-xi = 0.5         # odchylenie standardowe w rozkładzie normalnym mutacji
+mu = 0.1         # prawdopodobieństwo mutacji dla osobnika
+mu_c = 0.5       # prawdopodobieństwo mutacji konkretnej cechy, jeśli osobnik mutuje
+xi = 0.2         # odchylenie standardowe w rozkładzie normalnym mutacji
+xo = 0.1         # odchylenie standardowe w rozkładzie normalnym mutacji potomstwa
 
 # --------------------
 # PARAMETRY SELEKCJI
 # --------------------
-sigma = 0.9      # parametr w funkcji fitness (kontroluje siłę selekcji)
-threshold = 0.01  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
+sigma = 0.2      # parametr w funkcji fitness (kontroluje siłę selekcji)
+threshold = 0.1  # przykładowy próg do selekcji progowej (do ewentualnego użycia)
 
 # --------------------
 # PARAMETRY ŚRODOWISKA
 # --------------------
+
 # Liczba nisz
 niche_count = 2
+niche_color = ['red', 'yellow', 'green']
+habitat = [100,400,500]
+
 # Początkowe alpha(t)
-alpha0 = [np.array([0.0, -0.5]), np.array([0.0, 0.5])]  
-# Wektory kierunkowej zmiany c
-c = [np.array([0.01, 0.01]), np.array([0.01, 0.01])]     
+alpha0 = [np.array([0.0, -0.3]), np.array([0.0, 0.3]), np.array([0.0, 0.6])]
+# Wektor kierunkowej zmiany c
+#c = [np.array([0.00, 0.05]), np.array([0.00, 0.05]), np.array([0.00, 0.05])]
+c = [np.array([0.05, 0.00]), np.array([0.05, 0.00]), np.array([0.05, 0.00])]
 delta = 0.01    # odchylenie standardowe dla fluktuacji
 max_generations = 50  # liczba pokoleń do zasymulowania
 

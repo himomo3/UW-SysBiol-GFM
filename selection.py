@@ -1,33 +1,44 @@
 # selection.py
 
 import numpy as np
+import copy
+from config import xo
+from config import n
 
-def fitness_function(phenotype, env, sigma, ind):
+from mutation import mutate_offspring
+from individual import Individual
+
+
+def fitness_function(ind, env, sigma):
     """
     Funkcja fitness: phi_alpha(p) = exp( -||p - alpha||^2 / (2*sigma^2) )
     :param phenotype: fenotyp osobnika (np.array)
     :param alpha: optymalny fenotyp (np.array)
     :param sigma: odchylenie (float) kontrolujące siłę selekcji
     """
-    min_dist = np.inf
+    max_fitness = 0
     for niche in env.get_niches():
-        alpha = niche.get_optimal_phenotype()
-        diff = phenotype - alpha
-        dist_sq = np.sum(diff ** 2)
-        if dist_sq < min_dist:
-            min_dist = dist_sq
-            color_individual = niche.get_color_optimum()
-        ind.set_color(color_individual)
-    return np.exp(-min_dist / (2 * sigma ** 2))
+        diff = ind.get_phenotype() - niche.get_optimal_phenotype()
+        dist_sq = np.sum(diff**2)
+        temp_fitness = np.exp(-dist_sq / (2 * sigma ** 2))*(max(1-niche.get_occupancy(),0.1))**2
+        if temp_fitness >= max_fitness:
+            max_fitness = temp_fitness
+            id = niche.idx
+            fav_niche = niche
+            dist = dist_sq
+    ind.set_diff_dist(dist)
+    ind.set_niche_membership(id, fav_niche)
+    ind.set_fitness(max_fitness)
+    return max_fitness
 
 def proportional_selection(population, env, sigma, N):
     """
-    Model proporcjonalny:
+    Model proporcjonalny: 
       - P(rozmnożenia) = fitness / suma fitnessów
       - Generujemy nową populację wielkości N.
     """
     individuals = population.get_individuals()
-    fitnesses = [fitness_function(ind.get_phenotype(), env, sigma, ind) for ind in individuals]
+    fitnesses = [ind.get_fitness() for ind in individuals]
     total_fitness = sum(fitnesses)
     if total_fitness == 0:
         # Jeśli całkowite fitness jest 0, to każdy osobnik dostaje równą szansę
@@ -38,9 +49,15 @@ def proportional_selection(population, env, sigma, N):
     new_individuals = []
     for _ in range(N):
         chosen_idx = np.random.choice(range(len(individuals)), p=probabilities)
-        new_individuals.append(individuals[chosen_idx])
-
+        if chosen_idx not in new_individuals:
+            new_individuals.append(copy.deepcopy(individuals[chosen_idx]))
+    while len(new_individuals) < N:
+        #offspring = copy.deepcopy(np.random.choice(new_individuals))
+        phenotype = np.random.choice(copy(new_individuals)).get_phenotype + np.random.normal(loc=0.0, scale=xo, size = n)
+        new_individuals.append(Individual(phenotype))
+        fitness_function(new_individuals[-1])
     population.set_individuals(new_individuals)
+    population.set_new_size(len(new_individuals))
 
 def threshold_selection(population, env, sigma, threshold):
     """
@@ -52,7 +69,7 @@ def threshold_selection(population, env, sigma, threshold):
     individuals = population.get_individuals()
     survivors = []
     for ind in individuals:
-        f = fitness_function(ind.get_phenotype(), env, sigma, ind)
+        f = fitness_function(ind, env, sigma)
         if f >= threshold:
             survivors.append(ind)
     return survivors

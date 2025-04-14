@@ -1,8 +1,7 @@
 # main.py
 
-import os
-import streamlit as st
 import numpy as np
+import os
 import config
 from environment import Environment
 from population import Population
@@ -11,16 +10,16 @@ from mutation import mutate_population
 from selection import proportional_selection, threshold_selection
 from reproduction import asexual_reproduction
 from visualization import plot_population
-#let's push
 
 def main():
     niches_init = []
     for i in range(config.niche_count):
-        niches_init.append(Niche(alpha_init=config.alpha0[i], c=config.c[i], delta=config.delta, idx=i))
+        niches_init.append(Niche(alpha_init=config.alpha0[i], c=config.c[i], delta=config.delta, idx=i, color=config.niche_color[i], habitat=config.habitat[i]))
+
     env = Environment(niches=niches_init)
     pop = Population(size=config.N, n_dim=config.n)
 
-    # Katalog, w którym zapisujemy obrazki (możesz nazwać np. "frames/")
+    #tworzymy katalog do kolenych framsów
     frames_dir = "frames"
     try:
         for filename in os.listdir(frames_dir):
@@ -31,13 +30,23 @@ def main():
         pass
     os.makedirs(frames_dir, exist_ok=True)  # tworzy folder, jeśli nie istnieje
 
+    counter = 0
     for generation in range(config.max_generations):
+        print(counter/config.max_generations*100, "% gotowe")
+        counter += 1
         # 1. Mutacja
         mutate_population(pop, mu=config.mu, mu_c=config.mu_c, xi=config.xi)
 
         # 2. Selekcja
         survivors = threshold_selection(pop, env, config.sigma, config.threshold)
         pop.set_individuals(survivors)
+
+        # Zapis aktualnego stanu populacji do pliku PNG
+        frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
+        plot_population(pop, env, generation, save_path=frame_filename, show_plot=False)
+
+        env.update_niches_occupancy()
+
         if len(survivors) > 0:
             proportional_selection(pop, env, config.sigma, config.N)
         else:
@@ -48,9 +57,7 @@ def main():
         # 4. Zmiana środowiska
         env.update()
 
-        # Zapis aktualnego stanu populacji do pliku PNG
-        frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
-        plot_population(pop, env, generation, save_path=frame_filename, show_plot=False)
+
 
     print("Symulacja zakończona. Tworzenie GIF-a...")
 
@@ -71,7 +78,7 @@ def create_gif_from_frames(frames_dir, gif_filename, duration=0.2):
 
     # Sortujemy pliki po nazwach, żeby zachować kolejność generacji
     filenames = sorted([f for f in os.listdir(frames_dir) if f.endswith(".png")])
-
+    
     with imageio.get_writer(gif_filename, mode='I', duration=duration) as writer:
         for file_name in filenames:
             path = os.path.join(frames_dir, file_name)
