@@ -35,9 +35,9 @@ habitat = [800,800,500]
 alpha0 = [np.array([0.0, -0.3]), np.array([0.0, 0.3]), np.array([0.0, 0.6])]
 # Wektor kierunkowej zmiany c
 #c = [np.array([0.00, 0.05]), np.array([0.00, 0.05]), np.array([0.00, 0.05])]
-c = [np.array([0.15, 0.00]), np.array([0.15, 0.00]), np.array([0.05, 0.00])]
+c = [np.array([0.05, 0.00]), np.array([0.05, 0.00]), np.array([0.05, 0.00])]
 delta = 0.01    # odchylenie standardowe dla fluktuacji
-max_generations = 100  # liczba pokoleń do zasymulowania
+max_generations = 50  # liczba pokoleń do zasymulowania
 
 # ----------------------
 # PARAMETRY REPRODUKCJI
