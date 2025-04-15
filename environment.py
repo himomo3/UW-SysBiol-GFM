@@ -4,7 +4,8 @@ import numpy as np
 
 class Environment:
     """
-    Klasa środowiska przechowuje zawarte w nim nisze ewolucyjne.
+    Klasa środowiska przechowuje optymalny fenotyp alpha
+    oraz reguły jego zmiany w czasie.
     """
     def __init__(self, niches):
         """
@@ -19,7 +20,20 @@ class Environment:
         """
         for niche in self.niches:
             niche.update()
-            
 
     def get_optimal_phenotype(self):
         return [niche.get_optimal_phenotype() for niche in self.niches]
+
+    def get_niches(self):
+        return self.niches
+
+    def get_optimal_phenotype(self):
+        return [niche.get_optimal_phenotype() for niche in self.niches]
+
+    def update_niches_occupancy(self):
+        for niche in self.get_niches():
+            amount = niche.get_individual_amount()
+            habitat = niche.get_habitat()
+            occupancy = (amount - habitat)/habitat
+            niche.set_occupancy(occupancy)
+        pass

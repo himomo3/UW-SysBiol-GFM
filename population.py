@@ -1,7 +1,9 @@
 # population.py
 
 import numpy as np
+from environment import Environment
 from individual import Individual
+
 
 class Population:
     """
@@ -14,6 +16,7 @@ class Population:
         :param size: liczba osobników (N)
         :param n_dim: wymiar fenotypu (n)
         """
+        self.size = size
         self.individuals = []
         for _ in range(size):
             # przykładowo inicjalizujemy fenotypy w okolicach [0, 0, ..., 0]
@@ -25,3 +28,9 @@ class Population:
 
     def set_individuals(self, new_individuals):
         self.individuals = new_individuals
+
+    def set_new_size(self, new_size):
+        self.size = new_size
+
+    def get_size(self):
+        return self.size

@@ -22,3 +22,9 @@ def mutate_population(population, mu, mu_c, xi):
     """
     for ind in population.get_individuals():
         mutate_individual(ind, mu, mu_c, xi)
+
+def mutate_offspring(individual, xo):
+    phenotype = individual.get_phenotype().copy()
+    for i in range(len(phenotype)):
+        phenotype[i] += np.random.normal(0.0, xo)
+    individual.set_phenotype((phenotype))

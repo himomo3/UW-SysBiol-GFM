@@ -3,19 +3,33 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_population(population, alpha, generation, save_path=None, show_plot=False):
+def plot_population(population, env, generation, scatter_alpha, save_path=None, show_plot=False):
     """
     Rysuje populację w 2D wraz z optymalnym fenotypem alpha.
     Można zarówno wyświetlać (show_plot=True),
     jak i zapisywać obraz (save_path != None).
     """
-    x = [ind.get_phenotype()[0] for ind in population.get_individuals()]
-    y = [ind.get_phenotype()[1] for ind in population.get_individuals()]
-    
-    plt.figure(figsize=(5, 5))
-    plt.scatter(x, y, label="Populacja", alpha=0.7)
-    for i in range(len(alpha)):
-        plt.scatter([alpha[i][0]], [alpha[i][1]], color='red', label="Optimum", marker='X')
+    pop = population.get_individuals()
+    niches = env.get_niches()
+    plt.figure(figsize=(10, 10))
+
+    for niche in niches:
+        population_to_plot = []
+        for ind in pop:
+            if ind.get_niche_membership() == niche.get_niche_id():
+                population_to_plot.append(ind)
+        x = [ind.get_phenotype()[0] for ind in population_to_plot]
+        y = [ind.get_phenotype()[1] for ind in population_to_plot]
+        amount = len(x)
+        color = niche.get_color()
+        niche.set_individual_amount(amount)
+        plt.scatter(x, y, label=f"ilość osobników: {amount}", color=color, alpha=scatter_alpha)
+        alpha = niche.get_optimal_phenotype()
+        changed = niche.get_gained_individual()
+        plt.scatter(alpha[0], alpha[1], color=color, edgecolor="black", label=f"Optimum, zmieniło: {changed}", marker='X', s=100)
+
+    alpha = env.get_optimal_phenotype()
+
     plt.title(f"Pokolenie: {generation}")
     plt.xlim(-5, 5)
     plt.ylim(-5, 5)

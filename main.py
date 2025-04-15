@@ -1,7 +1,7 @@
 # main.py
 
-import os
 import numpy as np
+import os
 import config
 from environment import Environment
 from population import Population
@@ -11,28 +11,44 @@ from selection import proportional_selection, threshold_selection
 from reproduction import asexual_reproduction
 from visualization import plot_population
 
-#let's push
-
 def main():
     niches_init = []
     for i in range(config.niche_count):
-        niches_init.append(Niche(alpha_init=config.alpha0[i], c=config.c[i], delta=config.delta, idx=i))
+        niches_init.append(Niche(alpha_init=config.alpha0[i], c=config.c[i], delta=config.delta, idx=i, color=config.niche_color[i], habitat=config.habitat[i]))
+
     env = Environment(niches=niches_init)
     pop = Population(size=config.N, n_dim=config.n)
 
-    # Katalog, w którym zapisujemy obrazki (możesz nazwać np. "frames/")
+    #tworzymy katalog do kolenych framsów
     frames_dir = "frames"
+    try:
+        for filename in os.listdir(frames_dir):
+            file_path = os.path.join(frames_dir, filename)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    except:
+        pass
     os.makedirs(frames_dir, exist_ok=True)  # tworzy folder, jeśli nie istnieje
 
+    counter = 0
     for generation in range(config.max_generations):
+        print(round(counter/config.max_generations*100, 1), "% gotowe")
+        counter += 1
         # 1. Mutacja
         mutate_population(pop, mu=config.mu, mu_c=config.mu_c, xi=config.xi)
 
         # 2. Selekcja
-        survivors = threshold_selection(pop, env.get_optimal_phenotype(), config.sigma, config.threshold)
+        survivors = threshold_selection(pop, env, config.sigma, config.threshold)
         pop.set_individuals(survivors)
+
+        # Zapis aktualnego stanu populacji do pliku PNG
+        frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
+        plot_population(pop, env, generation, config.scatter_alpha, save_path=frame_filename, show_plot=False)
+
+        env.update_niches_occupancy()
+
         if len(survivors) > 0:
-            proportional_selection(pop, env.get_optimal_phenotype(), config.sigma, config.N)
+            proportional_selection(pop, env, config.sigma, config.N)
         else:
             print(f"Wszyscy wymarli w pokoleniu {generation}. Kończę symulację.")
             break
@@ -41,9 +57,7 @@ def main():
         # 4. Zmiana środowiska
         env.update()
 
-        # Zapis aktualnego stanu populacji do pliku PNG
-        frame_filename = os.path.join(frames_dir, f"frame_{generation:03d}.png")
-        plot_population(pop, env.get_optimal_phenotype(), generation, save_path=frame_filename, show_plot=False)
+
 
     print("Symulacja zakończona. Tworzenie GIF-a...")
 
